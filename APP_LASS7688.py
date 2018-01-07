@@ -5,8 +5,7 @@ fields = Conf.fields
 values = Conf.values
 
 def upload_data():
-	timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
-	pairs = timestamp.split(" ")
+	pairs = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S").split(" ")
 	values["device_id"] = Conf.DEVICE_ID
 	values["ver_app"] = Conf.Version
 	values["date"] = pairs[0]
@@ -19,8 +18,7 @@ def upload_data():
 		if Conf.num_re_pattern.match(str(values[item])):
 			msg = msg + "|" + item + "=" + str(values[item]) + ""
 		else:
-			tq = values[item]
-			tq = tq.replace('"','')
+			tq = values[item].replace('"','')
 			msg = msg + "|" + item + "=" + tq 
 	restful_str = "wget -O /tmp/last_upload.log \"" + Conf.Restful_URL + Conf.APP_ID + "/" + Conf.DEVICE_ID + "/" + msg + "\""
 	os.system(restful_str)
@@ -34,36 +32,25 @@ def upload_data():
 		f.write(msg + "\n")
 
 def display_data(disp):
-	timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
-	pairs = timestamp.split(" ")
+	pairs = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S").split(" ")
 	disp.setCursor(0,0)
-	temp = '{:16}'.format("ID: " + Conf.DEVICE_ID)
-	disp.write(temp)
+	disp.write('{:16}'.format("ID: " + Conf.DEVICE_ID))
         disp.setCursor(1,0)                                                                
-        temp = '{:16}'.format("Date: " + pairs[0])
-	disp.write(temp)
+        disp.write('{:16}'.format("Date: " + pairs[0]))
 	disp.setCursor(2,0)                                                                
-        temp = '{:16}'.format("Time: " + pairs[1])
-	disp.write(temp)
+        disp.write('{:16}'.format("Time: " + pairs[1]))
 	disp.setCursor(3,0)                                                                                                                              
-        temp = '{:16}'.format('Temp: %.2fC' % temp)
-	disp.write(temp)
+        disp.write('{:16}'.format('Temp: %.2fC' % values["s_t0"]))
 	disp.setCursor(4,0)                                                                
-        temp = '{:16}'.format('  RH: %.2f%%' % values["s_h0"])
-	disp.write(temp)
+        disp.write('{:16}'.format('  RH: %.2f%%' % values["s_h0"]))
 	disp.setCursor(5,0)                                                                                                            
-        temp = '{:16}'.format('PM2.5: %dug/m3' % values["s_d0"])
-	disp.write(temp)
+        disp.write('{:16}'.format('PM2.5: %dug/m3' % values["s_d0"]))
 	disp.setCursor(6,0)                                                                                                            
-        temp = '{:16}'.format('PM10: %dug/m3' % values["s_d1"])
-	disp.write(temp)
+        disp.write('{:16}'.format('PM10: %dug/m3' % values["s_d1"]))
 	
 def reboot_system():
-	process = subprocess.Popen(['uptime'], stdout = subprocess.PIPE)
-	k = process.communicate()[0]
-	items = k.split(",")
-	k = items[-3]
-	items = k.split(" ")
+	items = subprocess.Popen(['uptime'], stdout = subprocess.PIPE).communicate()[0].split(",")
+	items = items[-3].split(" ")
 	k = float(items[-1])
 	if k>1.5:
 		os.system("echo b > /proc/sysrq-trigger")
@@ -96,6 +83,5 @@ if __name__ == '__main__':
 		display_data(disp)
 		if count == 0:
 			upload_data()
-		count = count + 1
-		count = count % (Conf.Restful_interval / Conf.Interval_LCD)
+		count = (count + 1) % (Conf.Restful_interval / Conf.Interval_LCD)
 		time.sleep(Conf.Interval_LCD)
