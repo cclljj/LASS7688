@@ -2,6 +2,8 @@
 
 This is the main page for the LASS7688 project. The development of this project is based on the AnySense_7688 project. The project is distributed in an open sourced manner, and you are welcome to contribute and help us!
 
+Document: https://paper.dropbox.com/doc/LASS-LinkItSmart-7688-bojWhQaZtkTPgXnmYu1is
+
 ## Change log
 
 * 2018/1/7: version 0.1 released (use G5T, and support OTA, SD storage, OLED, restful data uploading)
