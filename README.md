@@ -30,7 +30,7 @@ Please login your 7688 board, and switch your 7688 to station mode (note: the ot
 
 3. Run the setup script:
    ```
-   /root/LASS7688/setup.sh
+   /root/LASS7688/setup.sh
 
 Then, the script will install and configure everything. The system will reboot after the installation is done, and hopefully the system will start to upload data to the backend database.
 
