@@ -1,9 +1,5 @@
-import time
-import string
-import os
-import subprocess
+import time, string, os, subprocess
 from datetime import datetime
-
 import APP_LASS7688_config as Conf
 fields = Conf.fields
 values = Conf.values
@@ -50,8 +46,7 @@ def display_data(disp):
         temp = '{:16}'.format("Time: " + pairs[1])
 	disp.write(temp)
 	disp.setCursor(3,0)                                                                                                                              
-	temp = (values["s_t0"]*1.8)+32
-        temp = '{:16}'.format('Temp: %.2fF' % temp)
+        temp = '{:16}'.format('Temp: %.2fC' % temp)
 	disp.write(temp)
 	disp.setCursor(4,0)                                                                
         temp = '{:16}'.format('  RH: %.2f%%' % values["s_h0"])
